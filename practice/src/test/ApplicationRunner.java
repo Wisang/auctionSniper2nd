@@ -5,6 +5,7 @@ import production.Main;
 public class ApplicationRunner {
 	public static final String SNIPER_ID = "sniper";
 	public static final String SNIPER_PASSWORD = "sniper";
+	public static String SNIPER_XMPP_ID = "sniper@localhost/Auction";
 	private AuctionSniperDriver driver;
 	private String XMPP_HOSTNAME = "localhost";
 
@@ -34,5 +35,9 @@ public class ApplicationRunner {
 		if (driver != null) {
 			driver.dispose();
 		}
+	}
+
+	public void hasShownSniperIsBidding() {
+		driver.showsSniperStatus(Main.STATUS_BIDDING);
 	}
 }
