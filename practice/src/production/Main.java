@@ -9,7 +9,7 @@ import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 
-public class Main implements AuctionEventListener {
+public class Main implements SniperListener {
 	private static final int ARG_HOSTNAME = 0;
 	private static final int ARG_USERNAME = 1;
 	private static final int ARG_PASSWORD = 2;
@@ -48,23 +48,27 @@ public class Main implements AuctionEventListener {
 
 	private void joinAuction(XMPPConnection connection, String itemId)
 			throws XMPPException {
-		disconnectWhenUICloses(connection);
-		Chat chat = connection.getChatManager().createChat(
-				auctionId(itemId, connection),
-				new AuctionMessageTranslator(this));
 
-		// new MessageListener() {
-		// public void processMessage(Chat aChat, Message message) {
-		// SwingUtilities.invokeLater(new Runnable() {
-		// public void run() {
-		// ui.showStatus(MainWindow.STATUS_LOST);
-		// }
-		// });
-		// }
-		// });
+		disconnectWhenUICloses(connection);
+		final Chat chat = connection.getChatManager().createChat(
+				auctionId(itemId, connection), null);
+		
+		this.notToBeGCd = chat;
+
+		Auction auction = new Auction() {
+			public void bid(int amount) {
+				try {
+					chat.sendMessage(String.format(BID_COMMAND_FORMAT, amount));
+				} catch (XMPPException e) {
+					e.printStackTrace();
+				}
+			}
+		};
+		
+		chat.addMessageListener(new AuctionMessageTranslator
+				(new AuctionSniper(auction,this)));
 
 		chat.sendMessage(JOIN_COMMAND_FORMAT);
-		this.notToBeGCd = chat;
 	}
 
 	private void disconnectWhenUICloses(final XMPPConnection connection) {
@@ -99,7 +103,7 @@ public class Main implements AuctionEventListener {
 	}
 
 	@Override
-	public void auctionClosed() {
+	public void sniperLost() {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				ui.showStatus(MainWindow.STATUS_LOST);
@@ -108,8 +112,11 @@ public class Main implements AuctionEventListener {
 	}
 
 	@Override
-	public void currentPrice(int price, int increment) {
-		// TODO Auto-generated method stub
-		
+	public void sniperBidding() {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				ui.showStatus(MainWindow.STATUS_BIDDING);
+			}
+		});
 	}
 }
