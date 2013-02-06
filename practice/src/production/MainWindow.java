@@ -13,11 +13,12 @@ public class MainWindow extends JFrame{
 	private static final long serialVersionUID = 1L;
 	
 	public static final String MAIN_WINDOW_NAME = "Main Window";
+	
 	protected static final String STATUS_LOST = "Lost";
-
 	protected static String STATUS_BIDDING = "Bidding";
-
 	public static String STATUS_WINNING = "Winning";
+	public static String STATUS_WON = "Won";
+	
 	private final JLabel sniperStatus = createLabel(Main.STATUS_JOINING);
 
 	public MainWindow() {

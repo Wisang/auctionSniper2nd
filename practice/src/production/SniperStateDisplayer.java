@@ -25,4 +25,9 @@ public class SniperStateDisplayer implements SniperListener {
 			}
 		});
 	}
+
+	@Override
+	public void sniperWon() {
+		showStatus(MainWindow.STATUS_WON);		
+	}
 }

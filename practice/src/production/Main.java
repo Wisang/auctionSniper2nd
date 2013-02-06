@@ -31,6 +31,7 @@ public class Main { //implements SniperListener {
 	public static String STATUS_BIDDING = "Bidding";
 
 	public static MainWindow ui;
+	public static String STATUS_WON = "Won";
 
 	@SuppressWarnings("unused")
 	private Chat notToBeGCd;
@@ -56,7 +57,9 @@ public class Main { //implements SniperListener {
 		this.notToBeGCd = chat;
 
 		Auction auction = new XMPPAuction(chat);
-		chat.addMessageListener(new AuctionMessageTranslator(new AuctionSniper(
+		chat.addMessageListener(new AuctionMessageTranslator(
+				connection.getUser(),
+				new AuctionSniper(
 				auction, new SniperStateDisplayer())));
 		auction.join();
 	}
