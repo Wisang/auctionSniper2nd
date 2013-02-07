@@ -21,13 +21,23 @@ public class SniperStateDisplayer implements SniperListener {
 	private void showStatus(final String status) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				Main.ui.showStatus(status);
+				// Main.ui.showStatus(status); //wisang
+				Main.ui.showStatusText(status);
 			}
 		});
 	}
 
 	@Override
 	public void sniperWon() {
-		showStatus(MainWindow.STATUS_WON);		
+		showStatus(MainWindow.STATUS_WON);
+	}
+
+	@Override
+	public void sniperBidding(final SniperState state) {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				Main.ui.sniperStatusChanged(state, MainWindow.STATUS_BIDDING);
+			}
+		});
 	}
 }

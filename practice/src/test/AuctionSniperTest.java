@@ -11,6 +11,7 @@ import production.Auction;
 import production.AuctionEventListener.PriceSource;
 import production.AuctionSniper;
 import production.SniperListener;
+import production.SniperState;
 
 @RunWith(JMock.class)
 public class AuctionSniperTest {
@@ -19,7 +20,7 @@ public class AuctionSniperTest {
 			.mock(SniperListener.class);
 	private final Auction auction = context.mock(Auction.class);
 
-	private final AuctionSniper sniper = new AuctionSniper(auction,
+	private final AuctionSniper sniper = new AuctionSniper("test", auction,
 			sniperListener);
 
 	private final States sniperState = context.states("sniper");
@@ -44,7 +45,8 @@ public class AuctionSniperTest {
 		context.checking(new Expectations() {
 			{
 				one(auction).bid(price + increment);
-				atLeast(1).of(sniperListener).sniperBidding();
+				atLeast(1).of(sniperListener).sniperBidding(
+						new SniperState("test", price, price+increment)); //wisang
 			}
 		});
 		sniper.currentPrice(price, increment, PriceSource.FromOtherBidder);
@@ -77,7 +79,7 @@ public class AuctionSniperTest {
 		context.checking(new Expectations() {
 			{
 				ignoring(auction);
-				allowing(sniperListener).sniperBidding();
+				allowing(sniperListener).sniperBidding(new SniperState("test", 123, 123+45)); //wisang
 				then(sniperState.is("bidding"));
 
 				atLeast(1).of(sniperListener).sniperLost();
