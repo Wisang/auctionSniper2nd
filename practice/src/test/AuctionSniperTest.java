@@ -79,7 +79,7 @@ public class AuctionSniperTest {
 		context.checking(new Expectations() {
 			{
 				ignoring(auction);
-				allowing(sniperListener).sniperBidding(new SniperState("test", 123, 123+45)); //wisang
+				allowing(sniperListener).sniperBidding(with(any(SniperState.class))); //wisang
 				then(sniperState.is("bidding"));
 
 				atLeast(1).of(sniperListener).sniperLost();

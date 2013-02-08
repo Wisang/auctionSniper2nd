@@ -19,7 +19,7 @@ public class ApplicationRunner {
 			public void run() {
 				try {
 					Main.main(XMPP_HOSTNAME , SNIPER_ID, SNIPER_PASSWORD,
-							auction.getItemId());
+							itemId); //wisang
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

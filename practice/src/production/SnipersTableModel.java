@@ -9,7 +9,7 @@ public class SnipersTableModel extends AbstractTableModel {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private final static SniperState STARTING_UP = new SniperState("", 0, 0);
+	private final static SniperState STARTING_UP = new SniperState("test item", 100, 100); //wisang
 	private String statusText = MainWindow.STATUS_JOINING;
 	private SniperState sniperState = STARTING_UP;
 
@@ -40,11 +40,13 @@ public class SnipersTableModel extends AbstractTableModel {
 	}
 
 	public void setStatusText(String newStatusText) {
+		System.out.println("set status called"); //wisang
 		statusText = newStatusText;
 		fireTableRowsUpdated(0, 0);
 	}
 
 	public void sniperStatusChanged(SniperState newSniperState, String newStatusText) {
+		System.out.println("status change called"); //wisang
 		sniperState = newSniperState;
 	    statusText = newStatusText;
 	    fireTableRowsUpdated(0, 0);

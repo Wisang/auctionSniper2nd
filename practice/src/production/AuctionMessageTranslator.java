@@ -13,10 +13,6 @@ public class AuctionMessageTranslator implements MessageListener {
 	private AuctionEventListener listener;
 	private final String sniperId;
 
-//	public AuctionMessageTranslator(AuctionEventListener listener) {
-//		this.listener = listener;
-//	}
-
 	public AuctionMessageTranslator(String sniperId,
 			AuctionEventListener listener) {
 		this.listener = listener;
@@ -24,7 +20,6 @@ public class AuctionMessageTranslator implements MessageListener {
 	}
 
 	public void processMessage(Chat chat, Message message) {
-		// HashMap<String, String> event = unpackEventFrom(message);
 		AuctionEvent event = AuctionEvent.from(message.getBody());
 
 		String type = event.type();
